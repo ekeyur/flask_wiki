@@ -14,18 +14,19 @@ db = pg.DB(dbname='wiki_db')
 
 @app.route('/<page_name>')
 def page_name(page_name):
-    q = db.query("Select * from wiki where title = '%s'" % page_name)
-    if len(q.namedresult()) < 1:
+    q = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()
+    if len(q) < 1:
         db.insert(
             'wiki',{
             'title':page_name,
-            'content':" ",
-            'last_date':time.strftime("%x"),
-            'author': "keyur"
+            'content':page_name,
+            'last_date':time.strftime("%Y-%m-%d %H:%M:%S"),
+            'last_author': "keyur"
             })
-        query = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()[0]
+        qu = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()
+        query = qu[len(qu)-1]
     else:
-        query = q.namedresult()[0]
+        query = q[len(q)-1]
 
     return render_template(
         'wiki.html',
@@ -59,7 +60,9 @@ def allpages():
 
 @app.route('/<page_name>/edit')
 def page_name_edit(page_name):
-    query = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()[0]
+    q = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()
+    query = q[len(q)-1]
+    print query
     return render_template(
     'edit.html',
     page_name = page_name,
@@ -71,10 +74,10 @@ def page_name_edit(page_name):
 def page_name_save(page_name):
     content = request.form.get('content')
     title = request.form.get('title')
-    if len(content) < 1:
-        db.insert('wiki',{'title':title, 'content':content, 'last_date':time.strftime("%x"),'last_author':'keyur'})
-    else:
-        db.update('wiki',{'title':title, 'content':content, 'last_date':time.strftime("%x"),'last_author':'keyur'})
+    # if len(content) < 1:
+    db.insert('wiki',{'title':title, 'content':content, 'last_date':time.strftime("%Y-%m-%d %H:%M:%S"),'last_author':'keyur'})
+    # else:
+    #     db.update('wiki',{'title':title, 'content':content, 'last_date':time.strftime("%Y-%m-%d %H:%M:%S"),'last_author':'keyur'})
     return render_template(
     'save.html',
     content = content,

@@ -3,12 +3,12 @@
 <div class="container">
 <div class="jumbotron">
 <table border="1">
-  <th>
-    <td>Title</td>
-    <td>Content</td>
-    <td>Last edited date</td>
-    <td>Last edited author</td>
-  </th> 
+  <tr>
+    <th>Title</th>
+    <th>Content</th>
+    <th>Last edited date</th>
+    <th>Last edited author</th>
+  </tr>
 {% for query in query %}
   <tr>
     <td>{{query.title}}</td>
