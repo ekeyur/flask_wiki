@@ -2,7 +2,13 @@
 {% block body %}
 <div class="container">
   <div class="jumbotron">
-    <table>
+    <table border="1">
+      <th>
+        <td>Title</td>
+        <td>Content</td>
+        <td>Last edited date</td>
+        <td>Last edited author</td>
+      </th>
     {% for query in query %}
       <tr>
         <td>{{query.title}}</td>
@@ -12,6 +18,13 @@
       </tr>
       {% endfor %}
     </table>
+    <br><br><br>
+    <form class="form-group" method="POST" action="/searchresults">
+      <!-- <label for="title">Search</label> -->
+      <input type="text" name="search" class="form-control" placeholder="Enter search text here">
+      <br>
+      <button type="submit" class="btn btn-primary">Search</button>
+  </form>
   </div>
 </div>
 {% endblock %}

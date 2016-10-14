@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+<div class="jumbotron">
+<table border="1">
+  <th>
+    <td>Title</td>
+    <td>Content</td>
+    <td>Last edited date</td>
+    <td>Last edited author</td>
+  </th> 
+{% for query in query %}
+  <tr>
+    <td>{{query.title}}</td>
+    <td>{{wiki_linkify(query.content)|safe}}</td>
+    <td>{{query.last_date}}</td>
+    <td>{{query.last_author}}</td>
+  </tr>
+  {% endfor %}
+</table>
+<br><br>
+<a href="/">Go to allpages</a>
+</div>
+</div>
+{% endblock %}

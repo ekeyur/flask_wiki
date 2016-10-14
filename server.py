@@ -33,6 +33,19 @@ def page_name(page_name):
         wiki_linkify = wiki_linkify,
         query = query
     )
+@app.route('/searchresults', methods=['POST'])
+def searchresults():
+    search = request.form.get('search')
+    query = db.query("Select * from wiki where content like '%%%s%%'" % search).namedresult()
+    if len(search) < 1:
+        return "no results"
+    else:
+        return render_template(
+        'searchresults.html',
+        query = query,
+        wiki_linkify = wiki_linkify
+        )
+
 
 @app.route('/')
 def allpages():
