@@ -1,0 +1,6 @@
+{% extends 'layout.html'%} {% block body%}
+<h1>{{query.title}}</h1> <span>"        "{{query.last_date}}</span> <span>"        "{{query.last_author}}</span>
+<br><br>
+<h4>{{query.content}}</h4>
+
+<a href="/{{query.title}}/edit">Edit this page</a> {% endblock%}
