@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="container">
+  <div class="jumbotron">
+    <table>
+    {% for query in query %}
+      <tr>
+        <td>{{query.title}}</td>
+        <td>{{wiki_linkify(query.content)|safe}}</td>
+        <td>{{query.last_date}}</td>
+        <td>{{query.last_author}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

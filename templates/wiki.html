@@ -1,6 +1,17 @@
-{% extends 'layout.html'%} {% block body%}
-<h1>{{query.title}}</h1> <span>"        "{{query.last_date}}</span> <span>"        "{{query.last_author}}</span>
-<br><br>
-<h4>{{query.content}}</h4>
+{% extends 'layout.html'%}
 
-<a href="/{{query.title}}/edit">Edit this page</a> {% endblock%}
+{% block body%}
+<div class="container">
+  <div class="jumbotron">
+    <table>
+      <tr><td><h2>{{query.title}}</h2></td></tr>
+      <tr><td><h4>{{query.last_date}}</h4></td><td><h6>{{query.last_author}}</h6></td></tr>
+      <br><br>
+      <tr><td><h5>{{wiki_linkify(query.content)|safe}}</h5></td></tr>
+    </table>
+    <br><br>
+    <a href="/{{query.title}}/edit">Edit this page</a>
+  </div>
+</div>
+
+ {% endblock%}
