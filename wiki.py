@@ -13,13 +13,23 @@ def home():
 
 @app.route('/<page_name>')
 def page_name(page_name):
-    query1 = db.query("Select * from wiki").namedresult()[0]
-    for data in query1:
-        if data.title == page_name:
-            query = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()[0]
+    q = db.query("Select * from wiki where title = '%s'" % page_name)
+    print len(q.namedresult())
+
+    if len(q.namedresult()) < 1:
+        db.insert(
+            'wiki',{
+            'title':page_name,
+            'content':" "
+            })
+        query = ""        
+    else:
+        query = q.namedresult()[0]
+
     return render_template(
-    'wiki.html'
-    query = query
+        'wiki.html',
+        page_name = page_name,
+        query = query
     )
 
 
