@@ -50,7 +50,13 @@ def searchresults():
 
 @app.route('/')
 def allpages():
-    query = db.query("select * from wiki").namedresult()
+
+    # query_string = "SELECT tt.* from wiki tt inner join(select title as tit, max(last_date) as dat from wiki group by title) as tab on tt.last_date = tab.dat and tt.title = tab.tit"
+
+    query_string = "select tt.* from wiki tt inner join(select title as tit, max(last_date) as dat from wiki group by title) as tab on tt.last_date = tab.dat and tt.title = tab.tit"
+
+    # query_string = "select * from wiki"
+    query = db.query(query_string).namedresult()
     return render_template(
     'allpages.html',
     query = query,

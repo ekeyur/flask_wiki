@@ -11,7 +11,7 @@
       </tr>
     {% for query in query %}
       <tr>
-        <td>{{query.title}}</td>
+        <td>{{wiki_linkify(query.title)|safe}}</td>
         <td>{{wiki_linkify(query.content)|safe}}</td>
         <td>{{query.last_date}}</td>
         <td>{{query.last_author}}</td>
