@@ -1,0 +1,17 @@
+{% extends 'layout.html'%}
+
+{% block body %}
+<form action="/submit_login" method="POST">
+    <div class="container col-sm-offset-4 col-md-offset-4 col-lg-offset-4 col-md-4 col-sm-4 col-lg-4">
+        <div class="form-group jumbotron">
+            <h3>Login</h3>
+            <br>
+            <input type="text" name="author" class="form-control" placeholder="George"><br>
+
+            <input type="text" class="form-control" name="password" placeholder="password" rows="8">
+          <br>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+    </div>
+</form>
+{% endblock %}

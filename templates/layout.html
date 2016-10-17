@@ -5,9 +5,26 @@
     <title>Our Wiki</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
+
+  {% if session['user']%}
+
+<div class="container">
+<form method="POST" action="/logout">
+  <div class="form-group">
+    <button type="submit" style="float: right" class="button btn-danger">Logout</button>
+    <h4 style="float: right">Welcome {{session['user']}}!</h4>
+  </div>
+</form>
+
+  {%else%}
+  <h4 style="text-align:right"><a href='/login'>Login</a></h4>
+
+  {%endif%}
+</div>
 {% block body %}
 
   <h1>Wiki</h1>
 
 {% endblock %}
+
 </html>

@@ -10,7 +10,11 @@
       <tr><td><h5>{{wiki_linkify(query.content)|safe}}</h5></td></tr>
     </table>
     <br><br>
-    <a href="/{{query.title}}/edit">Edit this page</a>
+    {% if session['user']%}
+      <a href="/{{query.title}}/edit">Edit this page</a>
+    {%else%}
+      <br>
+    {% endif %}
   </div>
 </div>
 

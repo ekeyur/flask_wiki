@@ -2,6 +2,15 @@
 {% block body %}
 <div class="container">
   <div class="jumbotron">
+    <div style="text-right">
+    </div>
+      <form class="form-group" method="POST" action="/searchresults">
+        <!-- <label for="title">Search</label> -->
+
+        <input type="text" name="search" class="form-control" placeholder="Enter search text here">
+        <br>
+        <button type="submit" name="search" class="btn btn-primary">Search</button>
+    </form>
     <table border="1">
       <tr>
         <th>Title</th>
@@ -11,20 +20,16 @@
       </tr>
     {% for query in query %}
       <tr>
-        <td>{{wiki_linkify(query.title)|safe}}</td>
-        <td>{{wiki_linkify(query.content)|safe}}</td>
+        <td><a href="{{query.title}}">{{query.title}}</a></td>
+        <td>{{query.content}}</td>
+        <!-- <td>{{wiki_linkify(query.content)|safe}}</td> -->
         <td>{{query.last_date}}</td>
         <td>{{query.last_author}}</td>
       </tr>
       {% endfor %}
     </table>
     <br><br><br>
-    <form class="form-group" method="POST" action="/searchresults">
-      <!-- <label for="title">Search</label> -->
-      <input type="text" name="search" class="form-control" placeholder="Enter search text here">
-      <br>
-      <button type="submit" class="btn btn-primary">Search</button>
-  </form>
+
   </div>
 </div>
 {% endblock %}

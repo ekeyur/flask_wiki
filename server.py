@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, session, flash
 from wiki_linkify import wiki_linkify
 import pg, time
 
 app = Flask("My Wiki")
 db = pg.DB(dbname='wiki_db')
 
+app.secret_key = 'keyur12345'
 
 # @app.route('/')
 # def home():
@@ -14,7 +15,7 @@ db = pg.DB(dbname='wiki_db')
 
 @app.route('/<page_name>')
 def page_name(page_name):
-    q = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()
+    q = db.query("Select * from wiki where title = $1",page_name).namedresult()
     if len(q) < 1:
         db.insert(
             'wiki',{
@@ -23,7 +24,7 @@ def page_name(page_name):
             'last_date':time.strftime("%Y-%m-%d %H:%M:%S"),
             'last_author': "keyur"
             })
-        qu = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()
+        qu = db.query("Select * from wiki where title = $1",page_name).namedresult()
         query = qu[len(qu)-1]
     else:
         query = q[len(q)-1]
@@ -36,8 +37,9 @@ def page_name(page_name):
     )
 @app.route('/searchresults', methods=['POST'])
 def searchresults():
-    search = request.form.get('search')
-    query = db.query("Select * from wiki where content like '%%%s%%'" % search).namedresult()
+    sea = request.form.get('search')
+    search = "%"+sea+"%"
+    query = db.query("Select * from wiki where content like $1",search).namedresult()
     if len(search) < 1:
         return "no results"
     else:
@@ -46,6 +48,36 @@ def searchresults():
         query = query,
         wiki_linkify = wiki_linkify
         )
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    del session['user']
+    return redirect('/')
+    flash("You are now logged out.")
+
+@app.route('/login')
+def login():
+    return render_template(
+    'login.html'
+    )
+
+@app.route('/submit_login', methods=['POST'])
+def submit_login():
+    author = request.form.get('author')
+    password = request.form.get('password')
+    query = db.query("Select * from author where name=$1",author).namedresult()
+
+    print query
+
+    if len(query)>0:
+        user = query[0]
+        if user.password == password:
+            session['user'] = user.name
+            return redirect('/')
+        else:
+            return redirect('/login')
+    else:
+        return redirect('/login')
 
 
 @app.route('/')
@@ -66,7 +98,7 @@ def allpages():
 
 @app.route('/<page_name>/edit')
 def page_name_edit(page_name):
-    q = db.query("Select * from wiki where title = '%s'" % page_name).namedresult()
+    q = db.query("Select * from wiki where title = $1", page_name).namedresult()
     query = q[len(q)-1]
     print query
     return render_template(
